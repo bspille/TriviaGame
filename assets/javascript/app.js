@@ -30,7 +30,7 @@ var trivia = {
 	initial: 		function() {
 						// displays initial text and start button
 						trivia.display.append("<h1 class='rmText'>Test Your coding knowedge</h1>");
-						trivia.display.append("<button class='start'>Begin</button>");	
+						trivia.display.append("<button class='btn btn-default start'><p>Begin</p></button>");	
 						trivia.start();			
 					},
 
@@ -83,13 +83,13 @@ var trivia = {
 						trivia.roundTime = setTimeout(trivia.after, 15000);
 						trivia.randomI();
 						trivia.display.append('<h2 class="question-display">' + questions[trivia.question].question + '</h2>');
-						trivia.display.append('<ol class="answers"></ol>')
+						trivia.display.append('<ol class="answers" type="A"></ol>')
 						// loops through the answers array for the selected questions and writes them in a random order
 						for (var i = 0; i < questions[trivia.question].answers.length; i++) {
 							trivia.randomJ();							
-							var newAnswer = $('<li class="answer">' +
+							var newAnswer = $('<li class="answer"><button class="btn btn-default"><p>' +
 											questions[trivia.question].answers[trivia.answer] +
-											'</li>');
+											'</p></button></li>');
 							// adds value to the correct answers
 							if (trivia.answer == 0) {
 								newAnswer.attr('correct', "true");
@@ -132,7 +132,7 @@ var trivia = {
 								trivia.correct++;		
 							break;
 							case 'false':
-								trivia.display.append('<h1 class="looser">Wrong answer!</h1>');
+								trivia.display.append('<h1 class="loser">Wrong answer!</h1>');
 								trivia.display.append('<h2 class="correction">The correct answer was:')
 								trivia.display.append('<h2 class="correction">' + questions[trivia.question].answers[0] + '</h2>');
 								trivia.wrong++;
@@ -154,7 +154,7 @@ var trivia = {
 				trivia.display.append('<h1 class="report">Results</h1>');
 				trivia.display.append('<h2 class="stat">Correct answers: ' + trivia.correct + '</h2>');
 				trivia.display.append('<h2 class="stat">Wrong answers: ' + trivia.wrong + '</h2');
-				trivia.display.append('<button class="start">Restart</button>');
+				trivia.display.append('<button class="btn btn-default start"><p>Restart</p></button>');
 				trivia.start()
 				}
 

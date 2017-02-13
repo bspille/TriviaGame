@@ -1,4 +1,27 @@
+.btn {
+	/*allows the button text to wrap*/
+	white-space: normal;
+}
+p {
+	font-size: 20px;
+}
 li {
 	font-size: 20px;
 	line-height: 2;
 }
+#wrapper {
+	background-image: url("");
+}
+#game-zone {
+	border-radius: 20px;
+	border: 20px ridge #333;
+	height: 100%;
+	padding: 20px;
+}
+.rmText, .winner, .loser, .timesUp, .question-display, .correction, .stat, .report {
+	padding-left: 40px;
+}
+.start {
+	margin-left: 40px;
+}
+
