@@ -5,9 +5,9 @@ var trivia = {
 	// div where the game will show on the screen
 	display: $("#game-zone"),
 	// logs correct answers
-	correct: [],
+	correct: 0,
 	// logs wrong answers
-	wrong: [],
+	wrong: 0,
 	// array of index numbers for the questions array objects
 	indexI: [],
 	// array of index numbers for the answers array in each questions object
@@ -16,12 +16,16 @@ var trivia = {
 	question: [],
 	// answer load point
 	answer: [],
-	// value given to the answer
-	value: [],
+	// selection
+	choice: 'time',
 	// counts the rounds
 	round: 0,
-	// ends the cylcles
+	// round time
+	roundTime: [],
+	// ends the cycles
 	end: false,
+	// lock in a single choice
+	lockedIn: false,
 
 	initial: 		function() {
 						// displays initial text and start button
@@ -32,8 +36,8 @@ var trivia = {
 
 	start: 			function() {
 						// clears empty values
-						trivia.correct = [];
-						trivia.wrong = [];
+						trivia.correct = 0;
+						trivia.wrong = 0;
 						trivia.indexI = [];
 						trivia.indexJ = [];
 						trivia.question = [];
@@ -43,55 +47,101 @@ var trivia = {
 						for (var i = 0; i < questions.length; i++) {
 							trivia.indexI.push(i);
 						};
+						// console.log(trivia.indexI);
 						$('.start').click(trivia.rounds); 
 					},
 
 	randomI: 	function() {
 					// random selection of questions from questions array with no repeats
-					var al = indexI.length--;
-					var ri = Math.round(Math.ramdom() * al);
-					trivia.question = indexI[ri];
+					var al = trivia.indexI.length - 1;
+					var ri = Math.round(Math.random() * al);
+					trivia.question = trivia.indexI[ri];
 					trivia.indexI.splice(ri, 1);
 					// set value for indexJ array
 					for (var i = 0; i < questions[trivia.question].answers.length; i++) {
 						trivia.indexJ.push(i);
 					};
+					// console.log(trivia.indexI);
+					// console.log(trivia.indexJ);
 				},
 
 	randomJ:  	function() {
 					// randomly selects answers with no repeats
-					var al = indexJ.length--;
+					var al = trivia.indexJ.length - 1;
 					var rj = Math.round(Math.random() * al);
-					trivia.answer  = trivia.indexJ[rj]
+					trivia.answer  = trivia.indexJ[rj];
 					trivia.indexJ.splice(rj, 1);
-				},
+					// console.log(trivia.indexJ);
+					},
 
 	rounds: 	function() {
-				
+					// displays the selected question and multiple choice answers until the pool is exhausted the runs results
+					trivia.lockedIn = false;
+					trivia.choice = 'time';
 					trivia.display.empty();
-					if (!end) {
-						setTimeout(trivia.after, 15000);
-						trivia.randomI().
-						trivia.display.append('<h2 class="question-display">' + questions[trivia.ri].question + '</h2>');
+					if (!trivia.end) {
+						trivia.roundTime = setTimeout(trivia.after, 15000);
+						trivia.randomI();
+						trivia.display.append('<h2 class="question-display">' + questions[trivia.question].question + '</h2>');
+						trivia.display.append('<ol class="answers"></ol>')
+						// loops through the answers array for the selected questions and writes them in a random order
 						for (var i = 0; i < questions[trivia.question].answers.length; i++) {
-							trivia.randomJ();
-							trivia.display.append('<p class="answers" value="' + trivia.value + '">' +
-													questions[trivia.question].answers[trivia.answer] +
-													'</p>');
+							trivia.randomJ();							
+							var newAnswer = $('<li class="answer">' +
+											questions[trivia.question].answers[trivia.answer] +
+											'</li>');
+							// adds value to the correct answers
+							if (trivia.answer == 0) {
+								newAnswer.attr('correct', "true");
+							}
+							else {
+								newAnswer.attr('correct', "false")
+							}
+							$('.answers').append(newAnswer);
+							$('.answer').click(trivia.selection);
 						}
 
-					};
-					else {
-						// end results
 					}
+					else {
+						trivia.results();
+					};
+				},
+
+	selection: 	function() {
+					if (!trivia.lockedIn) {
+						clearTimeout(trivia.roundTime);
+						trivia.choice = ($(this).attr('correct'));
+						trivia.lockedIn = true;
+						trivia.after()
+					};
+					// test the output of this for the event for scope issues
+					// console.log(trivia.choice);
 				},
 
 	after: 		function() {
-
+					console.log(trivia.choice);
 				trivia.display.empty();
-					if (!end) {
+					if (!trivia.end) {
 						setTimeout(trivia.rounds, 5000);
 						
+						// switch after display for the condition
+						switch (trivia.choice) {
+							case 'true': 
+								trivia.display.append('<h1 class="winner">Congratulations!</h1>');
+								trivia.display.append('<h2 class="winner">You are correct</h2>')
+								trivia.correct++;		
+							break;
+							case 'false':
+								trivia.display.append('<h1 class="looser">Wrong answer!</h1>');
+								trivia.display.append('<h2 class="correction">The correct answer was:')
+								trivia.display.append('<h2 class="correction">' + questions[trivia.question].answers[0] + '</h2>');
+								trivia.wrong++;
+							break;
+							case 'time':
+								trivia.display.append('<h1 class="timesUp">Times Up!</h1>');
+							break;
+						
+						};
 					};
 					trivia.round++;
 					if (trivia.round == questions.length) {
@@ -101,21 +151,15 @@ var trivia = {
 				
 	results: 	function() {
 				trivia.display.empty()
+				trivia.display.append('<h1 class="report">Results</h1>');
+				trivia.display.append('<h2 class="stat">Correct answers: ' + trivia.correct + '</h2>');
+				trivia.display.append('<h2 class="stat">Wrong answers: ' + trivia.wrong + '</h2');
+				trivia.display.append('<button class="start">Restart</button>');
+				trivia.start()
 				}
 
 
-	// started random generators for questions and answers still need a value generator and a flag for correct answers
-
-	// try to use parameters more and keep the codes simple
-
-	// game must have timed intervals to advance the game or player answers to advance the game
-
-	// game must display status of answers between question congrad u correct, times up, u wrong the answer is
-
-	// game must display report after the game has ended, number of correct answers, number of wrong answers, option to restart
-
-
-
-}
-// when the doc is ready run the start function
+} // end of trivia object
+	
+	//when the doc is ready run the start function
 $(document).ready(trivia.initial);

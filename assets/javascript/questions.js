@@ -1,6 +1,6 @@
 var questions = [
 // each object holds a question property and answer property
-// the correct answer will alway be place first at index 0 of the answer array
+// the correct answer will always be place first at index 0 of the answer array
 	{	question: "What is the most important part of programming?",
 		answers: ["Taking the first step.",
 				"Knowing how to code.",
@@ -11,8 +11,8 @@ var questions = [
 	{	question: "What is the primary use of regular expressions?",
 		answers: ["Validation by searching for patterns.",
 				"Expressions used on a regular bases.",
-				"Checks for regular conditionsin the function of the code.",
-				"regulates expressions."]
+				"Checks for regular conditions in the function of the code.",
+				"Regulates expressions."]
 },
 
 	{	question: "What does a switch do?",
@@ -53,15 +53,15 @@ var questions = [
 	{	question: "What is a good use of for loops?",
 		answers: ["Cloning array values.",
 				"Running programs in endless cycles.",
-				"practicing Your golf swing.",
-				"generating console.log's."]
+				"Practicing your golf swing.",
+				"Generating console.log's."]
 	},
 
 	{	question: "What is one way to increase the scope of a function?",
 		answers: ["Create a reference to the object you wish to grant access inside the scope.",
 				"Extend a pipe.",
 				"Use class functions to increase the scope.",
-				'make use of key word "self".']
+				'Make use of key word "self".']
 	},
 
 	{	question: "What is scope?",
