@@ -30,7 +30,15 @@ var trivia = {
 	initial: 		function() {
 						// displays initial text and start button
 						trivia.display.append("<h1 class='rmText'>Test Your coding knowedge</h1>");
-						trivia.display.append("<button class='btn btn-default start'><p>Begin</p></button>");	
+						trivia.display.append("<button class='btn btn-default start'><p>Begin</p></button>");
+						trivia.display.append('<h2 class="instr">Instructions</h2>' +
+												'<ol class="instr">' + 
+												'<li>You have 15 seconds for each multiple choice question.</li>' +
+												'<li>There are 10 question and answer sets that are displayed in random order.</li>' +
+												'<li>Click on the most correct answer to the question.</li>' +
+												'<li>The game will automatically continue to the next question if no answer is given in the alloted time</li>' +
+												"<li>This game counts correct and wrong answers and display's a report at the end.</li>" + '</ol>');
+						$('.instr').css({'color': 'orange', 'padding-left': '40px'});
 						trivia.start();			
 					},
 
@@ -139,6 +147,8 @@ var trivia = {
 							break;
 							case 'time':
 								trivia.display.append('<h1 class="timesUp">Times Up!</h1>');
+								trivia.display.append('<h2 class="correction">The correct answer was:')
+								trivia.display.append('<h2 class="correction">' + questions[trivia.question].answers[0] + '</h2>');
 							break;
 						
 						};
